@@ -38,7 +38,7 @@
 - **Node.js** - required v18 or v20
 - **Expo CLI**
 - **Git**
-- **Expo Go** app on your smartphone or iOS Simulator (**XCode**) or Android Emulator (**A**ndroid Studio**)
+- **Expo Go** app on your smartphone or iOS Simulator (**XCode**) or Android Emulator (**Android Studio**)
 
 ### 2. Installation
 
