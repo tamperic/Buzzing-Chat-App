@@ -1,8 +1,9 @@
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, ImageBackground, Image } from "react-native";
 import { useState } from "react";
+import Feather from '@expo/vector-icons/Feather';
 
 const backgroundImage = require("../assets/BackgroundImage.png");
-const userIcon = require("../assets/UserIcon.svg");
+
 
 const Start = ({ navigation }) => {
     const [ name, setName ] = useState('');
@@ -14,7 +15,6 @@ const Start = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <ImageBackground resizeMode="cover" source={backgroundImage} style={styles.image}>
-                <Image source={userIcon} style={styles.userIcon} />
                 <Text style={styles.title}>Buzzin<Text style={{ opacity: 0.5 }}>g</Text></Text>
                 <View style={styles.box}>
                     <TextInput 
@@ -24,6 +24,7 @@ const Start = ({ navigation }) => {
                         onChangeText={setName}
                     />
                     <Text style={styles.textBgColor}>Choose Background Color:</Text>
+                        <Feather name="user" size={24} color="black" style={styles.UserIcon} />
                     <View style={styles.circlesBox}>
                         {circles.map((circle, index) => {
                             // Used 'index' from 'map' to access the corresponding border color from the borders array.
@@ -61,6 +62,7 @@ const styles = StyleSheet.create({
 
     // Title
     title: {
+        marginTop: 100,
         textAlign: 'center',
         fontSize: 45,
         fontWeight: 600,
@@ -79,18 +81,23 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
-    // Input = icon + text
-    userIcon: {
-        width: 20,
-        height: 20,
-        marginRight: 10
-    },
-    textInput: {
+    // inputBox = icon + text
+    inputBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
         marginTop: 20,
         borderWidth: 1,
         padding: 15,
         width: '88%',
         borderRadius: 5,
+    },
+    UserIcon: {
+        width: 20,
+        height: 20,
+        marginRight: 15,
+        opacity: 0.7
+    },
+    textInput: {
         fontSize: 16,
         fontWeight: 300
     },
