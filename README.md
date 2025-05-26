@@ -6,7 +6,7 @@
 
 1. [Tech Stack](#tech-stack)
 2. [Features](#features)
-3. [Setup & Installation](#setup-&-installation)
+3. [Setup & Installation](#setup--installation)
 4. [Screenshots](#screenshots)
 
 ## Tech Stack
@@ -22,7 +22,7 @@
 
 ## Features
 
-- **Start Component**: Users are able to enter their name and choose one of the four given background colors for the chat screen before joining the chat.
+- **Start Component**: users are able to enter their name and choose one of the four given background colors for the chat screen before joining the chat.
 - **Chat Component**: displaying the conversation, as well as an input field and submit button.
 - **Image sharing**: users are able to send images.
 - **Location sharing**: users are able to send location data.
@@ -57,3 +57,5 @@ npm install
 npm expo start
 ```
 - You can then scan the QR code with the Expo Go app on your mobile device, or run the app on an emulator (type **a** in terminal to open Android, **i** to open iOS, or **w** in a web browser)
+
+## Screenshots
