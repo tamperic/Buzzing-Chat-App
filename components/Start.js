@@ -15,30 +15,54 @@ const Start = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <ImageBackground resizeMode="cover" source={backgroundImage} style={styles.image}>
-                <Text style={styles.title}>Buzzin<Text style={{ opacity: 0.5 }}>g</Text></Text>
+                <Text style={styles.title}
+                    accessibilityLabel='Buzzing'
+                    accessibilityHint='The name of application'
+                    accessibilityRole='header' 
+                >Buzzin<Text style={{ opacity: 0.5 }}>g</Text>
+                </Text>
                 <View style={styles.box}>
-                    <TextInput 
-                        style={styles.textInput}
-                        value={name}
-                        placeholder="Your name"
-                        onChangeText={setName}
-                    />
-                    <Text style={styles.textBgColor}>Choose Background Color:</Text>
+                    <View style={styles.inputBox}>
                         <Feather name="user" size={24} color="black" style={styles.UserIcon} />
+                        <TextInput 
+                            style={styles.textInput}
+                            value={name}
+                            placeholder="Your name"
+                            onChangeText={setName}
+                            accessibilityLabel='Input field'
+                            accessibilityHint='Enter your name to start to chat'
+                        />
+                    </View>
+                    <Text style={styles.textBgColor} 
+                        accessibilityLabel='Choose background color'
+                        accessibilityRole='text' 
+                    >Choose Background Color:
+                    </Text>
                     <View style={styles.circlesBox}>
                         {circles.map((circle, index) => {
                             // Used 'index' from 'map' to access the corresponding border color from the borders array.
                             const isSelected = bgColor === circle;
                             return (
-                            <TouchableOpacity 
-                                key={ circle } 
-                                style={[ styles.circles, styles.borders, { backgroundColor: circle, borderColor: isSelected ? borders[index] : 'transparent' } ]} // Only apply the 'borderColor' if the current circle is selected. Otherwise, make it transparent (or same as background for invisibility).
-                                onPress={() => setBgColor(circle)} 
-                            />
-                        )} )}
+                                <TouchableOpacity 
+                                    key={ circle } 
+                                    style={[ styles.circles, styles.borders, { backgroundColor: circle, borderColor: isSelected ? borders[index] : 'transparent' } ]} // Only apply the 'borderColor' if the current circle is selected. Otherwise, make it transparent (or same as background for invisibility).
+                                    onPress={() => setBgColor(circle)}
+                                    accessibilityLabel='Choose the background color for your chat screen ${circle}' 
+                                    accessibilityRole='button'
+                                />
+                            )
+                        })}
                     </View>
-                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Chat', { name: name, backgroundColor: bgColor })}>
-                        <Text style={styles.btnText}>Let's Chat!</Text>
+                    <TouchableOpacity style={styles.button} 
+                        onPress={() => navigation.navigate('Chat', { name: name, backgroundColor: bgColor })}
+                        accessible={true}
+                        accessibilityLabel='Open the chat' 
+                        accessibilityHint='Press the button to open the chat'
+                        accessibilityRole='button'
+                    >
+                        <Text style={styles.btnText} 
+                        >Let's Chat!
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </ImageBackground>
@@ -90,6 +114,10 @@ const styles = StyleSheet.create({
         padding: 15,
         width: '88%',
         borderRadius: 5,
+        // shadowColor: 'black',
+        // shadowOpacity: 0.8,
+        // shadowOffset: {width: 1, height: 1},
+        // shadowRadius: 1
     },
     UserIcon: {
         width: 20,
