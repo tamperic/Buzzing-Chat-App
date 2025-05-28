@@ -15,22 +15,24 @@ const Chat = ({ route, navigation }) => {
         navigation.setOptions({ title: name });
 
         setMessages([
-          {
-            _id: 1,
-            text: 'Hello developer',
-            createdAt: new Date(),
-            user: {
-              _id: 2,
-              name: 'React Native',
-              avatar: 'https://placeimg.com/140/140/any',
+            // System default message when user opens the chat
+            {
+                _id: 2,
+                text: 'You have entered the chat',
+                createdAt: new Date(),
+                system: true,
             },
-          },
-          {
-            _id: 2,
-            text: 'This is a system message',
-            createdAt: new Date(),
-            system: true,
-          },
+            // Default bubble message when user opens the chat
+            {
+                _id: 1,
+                text: 'Hello developer',
+                createdAt: new Date(),
+                user: {
+                _id: 2,
+                name: 'React Native',
+                avatar: 'https://placeimg.com/140/140/any',
+                },
+            },
         ]);
     }, []); // 'useEffect()' function gets called right after the Chat component mounts and sets up an initial default message in the chat (A message saying "Hello developer" from a user named "React Native" with an avatar.)
 
