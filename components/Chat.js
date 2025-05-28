@@ -142,9 +142,6 @@ const Chat = ({ route, navigation }) => {
             />
             { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null }
             { Platform.OS === "ios"?<KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-211} /> : null } 
-            
-            {/* <Text style={[styles.text, { fontSize: 36 }]}>Hi {name}! 👋🏼</Text>
-            <Text style={styles.text}>Welcome to Buzzin<Text style={{ opacity: 0.5 }}>g</Text> 💬 </Text> */}
         </View>
     );
 }
@@ -172,13 +169,7 @@ const styles = StyleSheet.create({
         minHeight: 40,
         maxHeight: 120,
         flex: 1,
-    },
-    // text: {
-    //     fontSize: 26,
-    //     fontWeight: 600,
-    //     color: '#fff', 
-    //     padding: 15
-    // }
+    }
 });
 
 export default Chat;
