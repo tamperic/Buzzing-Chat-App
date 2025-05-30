@@ -1,39 +1,37 @@
 import { useEffect, useState } from "react";
-import { View, StyleSheet, Text, KeyboardAvoidingView, Platform } from "react-native";
+import { View, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
 import { Send, Bubble, GiftedChat, InputToolbar, Composer, SystemMessage, Day } from "react-native-gifted-chat"; // Import Gifted Chat library
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { addDoc, collection, onSnapshot, orderBy, query } from "firebase/firestore";
 
 
-const Chat = ({ route, navigation }) => {
+const Chat = ({ route, navigation, db }) => {
     const [ messages, setMessages ] = useState([]);
-    const { name, backgroundColor } = route.params;
+    const { name, backgroundColor, userID } = route.params;
+    
     const onSend = (newMessages) => {
-        setMessages(previousMessages => GiftedChat.append(previousMessages, newMessages))
-    } // 'onSend' gets called with the new message; adds new message it to the existing list of messages using '.append'. The 'message' state updates, cousing the chat UI to re-render and show the new message.
+        // Update 'onSend' function to save sent messages on the Firestore database.
+        addDoc(collection(db, 'messages'), newMessages[0]); // Use the 'addDoc()' Firestore function to save the passed message to the function in the database.
+    };
     
     useEffect(() => {
         navigation.setOptions({ title: name });
 
-        setMessages([
-            // System default message when user opens the chat
-            {
-                _id: 2,
-                text: 'You have entered the chat',
-                createdAt: new Date(),
-                system: true,
-            },
-            // Default bubble message when user opens the chat
-            {
-                _id: 1,
-                text: 'Hello developer',
-                createdAt: new Date(),
-                user: {
-                _id: 2,
-                name: 'React Native',
-                avatar: 'https://placeimg.com/140/140/any',
-                },
-            },
-        ]);
+        // code to execute when component mounted or updated
+        const q = query(collection(db, "messages"), orderBy('createdAt', 'desc'), where('uid', '==', userID));
+        const unsubChat = onSnapshot(q, (documentsSnapshot) => {
+            let newMessages = []; // An empty array (newMessages) is created, which will be filled later in the 'forEach()' loop.
+            documentsSnapshot.forEach(docObject => {
+                newMessages.push({id: docObject.id, ...docObject.data(), createdAt: docObject.data().createdAt.toDate() });
+            }); // First the document id found in the '.id' property of each object within this complex object. The actual document properties can be extracted with the '.data()' function of each object in 'messages'. And the TimeStamp stored at the 'createdAt' property of each message is converted to a Date object that Gifted Chat understands.
+            setMessages(newMessages); // Use the state setter function 'setMessages' to assign the new array to 'messages' state.
+        });
+
+        // Clean up code (returned function) by calling the unsubsrcibe function of 'onSnapshot()'
+        return () => {
+            // code to execute when the component will be unmounted
+            if (unsubChat) unsubChat(); // An 'if' statement has been added to check if the 'unsubChat' isn't undefined. This is a protection procedure just in case the 'onSnapshot()' function call fails.
+        }
     }, []); // 'useEffect()' function gets called right after the Chat component mounts and sets up an initial default message in the chat (A message saying "Hello developer" from a user named "React Native" with an avatar.)
 
 
@@ -121,17 +119,17 @@ const Chat = ({ route, navigation }) => {
             />
         )
     }
-
+ 
 
     return (
-        <View style={[ styles.container, { backgroundColor }]}>
+        <View style={[ styles.container, { backgroundColor }]} >
             <GiftedChat
                 messages={messages}
                 renderBubble={renderBubble}
                 onSend={messages => onSend(messages)}
                 user={{
-                    _id: 1,
-                    name
+                    _id: userID, // '_id' property has the value of the (user ID) route parameter passed from the Start screen when logged in anonymously.
+                    name: name // 'name' property has the value of the name route parameter passed from Start screen when logged in anonymously.
                 }}
                 renderInputToolbar={renderInputToolbar} 
                 renderSend={renderSend}
@@ -141,7 +139,8 @@ const Chat = ({ route, navigation }) => {
                 alwaysShowSend={true}
             />
             { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null }
-            { Platform.OS === "ios"?<KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-211} /> : null } 
+            { Platform.OS === "ios" ? <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-211} /> : null } 
+           
         </View>
     );
 }

@@ -1,16 +1,31 @@
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, ImageBackground, Image } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, ImageBackground, Alert } from "react-native";
 import { useState } from "react";
 import Feather from '@expo/vector-icons/Feather';
+import { getAuth, signInAnonymously } from "firebase/auth";
 
 const backgroundImage = require("../assets/BackgroundImage.png");
 
 
 const Start = ({ navigation }) => {
+    const auth = getAuth(); // 'getAuth()' returns the authentication handle of Firebase.
+    
     const [ name, setName ] = useState('');
 
     const [ bgColor, setBgColor ] = useState('#474056');
     const circles = [  '#474056', '#8A95A5', '#B9C6AE', '#090C08' ];
     const borders = ['#796c94', '#59616b', '#7a856f', '#6b6b6a'];
+
+    const signInUser = () => {
+        // 'signInAnonymously()' allows the user to sign in anonymously. It returns a promise, which means that can attach .then() and .catch() to it.
+        signInAnonymously(auth)
+            .then(result => {
+                navigation.navigate("Chat", { name: name, backgroundColor: bgColor, userID: result.user.uid}); // Once the user is signed in, the app navigates to the 'Chat' screen while passing 'result.user.uid' (which is assigned to the route parameter 'userID'). This user ID will be used to personalize the chat your users view and add to the 'Chat' screen.
+                Alert.alert('Successfully signed in!');
+            }) //  Also, get an information object (represented by 'result' in the code example) regarding the temporary user account. 
+            .catch((error) => {
+                Alert.alert('Unable to sign in, try again later.');
+            })
+    };
 
     return (
         <View style={styles.container}>
@@ -54,7 +69,7 @@ const Start = ({ navigation }) => {
                         })}
                     </View>
                     <TouchableOpacity style={styles.button} 
-                        onPress={() => navigation.navigate('Chat', { name: name, backgroundColor: bgColor })}
+                        onPress={signInUser}
                         accessible={true}
                         accessibilityLabel='Open the chat' 
                         accessibilityHint='Press the button to open the chat'
