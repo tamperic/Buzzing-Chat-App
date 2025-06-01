@@ -1,19 +1,19 @@
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, ImageBackground, Alert } from "react-native";
 import { useState } from "react";
 import Feather from '@expo/vector-icons/Feather';
-import { getAuth, signInAnonymously } from "firebase/auth";
+import { signInAnonymously } from "firebase/auth";
+import { auth } from "../firebase.config";
 
 const backgroundImage = require("../assets/BackgroundImage.png");
 
 
 const Start = ({ navigation }) => {
-    const auth = getAuth(); // 'getAuth()' returns the authentication handle of Firebase.
-    
     const [ name, setName ] = useState('');
 
     const [ bgColor, setBgColor ] = useState('#474056');
     const circles = [  '#474056', '#8A95A5', '#B9C6AE', '#090C08' ];
     const borders = ['#796c94', '#59616b', '#7a856f', '#6b6b6a'];
+
 
     const signInUser = () => {
         // 'signInAnonymously()' allows the user to sign in anonymously. It returns a promise, which means that can attach .then() and .catch() to it.
