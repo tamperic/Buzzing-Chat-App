@@ -69,7 +69,13 @@ const Start = ({ navigation }) => {
                         })}
                     </View>
                     <TouchableOpacity style={styles.button} 
-                        onPress={signInUser}
+                        onPress={() => {
+                            if (name == '') {
+                                Alert.alert('Please enter your username to start to chat');
+                            } else {
+                                signInUser();
+                            }
+                        }}
                         accessible={true}
                         accessibilityLabel='Open the chat' 
                         accessibilityHint='Press the button to open the chat'
@@ -129,10 +135,6 @@ const styles = StyleSheet.create({
         padding: 15,
         width: '88%',
         borderRadius: 5,
-        // shadowColor: 'black',
-        // shadowOpacity: 0.8,
-        // shadowOffset: {width: 1, height: 1},
-        // shadowRadius: 1
     },
     UserIcon: {
         width: 20,
