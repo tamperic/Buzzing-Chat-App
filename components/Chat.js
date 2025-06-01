@@ -18,7 +18,7 @@ const Chat = ({ route, navigation, db }) => {
         navigation.setOptions({ title: name });
 
         // code to execute when component mounted or updated
-        const q = query(collection(db, "messages"), orderBy('createdAt', 'desc'), where('uid', '==', userID));
+        const q = query(collection(db, "messages"), orderBy('createdAt', 'desc'));
         const unsubChat = onSnapshot(q, (documentsSnapshot) => {
             let newMessages = []; // An empty array (newMessages) is created, which will be filled later in the 'forEach()' loop.
             documentsSnapshot.forEach(docObject => {
