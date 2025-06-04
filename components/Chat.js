@@ -5,7 +5,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { addDoc, collection, onSnapshot, orderBy, query } from "firebase/firestore";
 
 
-const Chat = ({ route, navigation, db }) => {
+const Chat = ({ route, navigation, db, isConnected }) => {
     const [ messages, setMessages ] = useState([]);
     const { name, backgroundColor, userID } = route.params;
     
