@@ -6,6 +6,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { addDoc, collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage"; // A persistent key-value storage mechanism in which can strings be stored.
 import MapView from 'react-native-maps';
+import { getBottomSpace } from "react-native-iphone-screen-helper";
 
 const Chat = ({ route, navigation, db, isConnected, storage }) => {
     const [ messages, setMessages ] = useState([]);
@@ -193,6 +194,11 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
 
     return (
         <View style={[ styles.container, { backgroundColor }]} >
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? getBottomSpace() - 195 : 0}
+            >
             <GiftedChat
                 messages={messages}
                 onSend={messages => onSend(messages)}
@@ -210,8 +216,9 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
                 renderCustomView={renderCustomView}
                 alwaysShowSend={true}
             />
-            { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null }
-            { Platform.OS === "ios" ? <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-211} /> : null } 
+            </KeyboardAvoidingView>
+            {/* { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null }
+            { Platform.OS === "ios" ? <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-211} /> : null }  */}
         </View>
     );
 }
