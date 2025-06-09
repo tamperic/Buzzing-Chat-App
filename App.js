@@ -9,7 +9,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // Create navigator
 const Stack = createNativeStackNavigator();
 
-import { db } from './firebase.config';
+// Import Cloud Firestore and Firebase storage
+import { db, storage } from './firebase.config';
 
 import { useNetInfo } from '@react-native-community/netinfo';
 import { useEffect } from 'react';
@@ -17,10 +18,10 @@ import { Alert } from 'react-native';
 import { disableNetwork, enableNetwork } from 'firebase/firestore';
 
 
-export default function App() {
-  // Use 'useNetInfo' determine whether a user is online or not.
-  const connectionStatus = useNetInfo();
 
+export default function App() {
+  const connectionStatus = useNetInfo(); // Use 'useNetInfo' determine whether a user is online or not.
+ 
   // Display an alert popup if connection is lost. 
   // In Android, Firebase will keep attempting to reconnect to the Firestore Database. These attempts can be disabled by calling the Firestore function 'disableNetwork(db)' when '.isConnected'' is false '. To re-enable, call another Firestore function 'enableNetwork(db)' when '.isConnected' is 'true'.
   useEffect(() => {
@@ -37,7 +38,7 @@ export default function App() {
       <Stack.Navigator initialRouteName='Start'>
         <Stack.Screen name='Start' component={Start}/>
         <Stack.Screen name='Chat'>
-          {props => <Chat db={db} isConnected={connectionStatus.isConnected} {...props} />}
+          {props => <Chat db={db} isConnected={connectionStatus.isConnected} storage={storage} {...props} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
