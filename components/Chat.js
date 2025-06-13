@@ -7,6 +7,8 @@ import { addDoc, collection, onSnapshot, orderBy, query } from "firebase/firesto
 import AsyncStorage from "@react-native-async-storage/async-storage"; // A persistent key-value storage mechanism in which can strings be stored.
 import MapView from 'react-native-maps';
 import { getBottomSpace } from "react-native-iphone-screen-helper";
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 const Chat = ({ route, navigation, db, isConnected, storage }) => {
     const [ messages, setMessages ] = useState([]);
@@ -92,13 +94,13 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
         if (!isConnected) return null;
       
         return (
-          <InputToolbar
-            {...props}
-            containerStyle={styles.InputToolbar}
-            accessibilityLabel="Input field"
-            accessibilityHint="Type something to send a message"
-            accessibilityRole="text"
-          />
+            <InputToolbar
+                {...props}
+                containerStyle={styles.InputToolbar}
+                accessibilityLabel="Input field"
+                accessibilityHint="Type something to send a message"
+                accessibilityRole="text"
+            />
         );
     };
 
@@ -109,10 +111,9 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
                 accessibilityLabel='Send icon button'
                 accessibilityHint='Press the icon button to send a message'
                 accessibilityRole='button' 
+                containerStyle={{ justifyContent: 'center', alignItems: 'center', paddingHorizontal: 6 }}
             >
-                <View style={{ justifyContent: 'center', alignItems: 'center', height: 25, marginBottom: 10, marginLeft: 8 }}>
-                    <FontAwesome name="send" size={22} color="#828282" />
-                </View>
+                <FontAwesome name="send" size={22} color="#828282" />
             </Send>
         )
     }
@@ -193,33 +194,28 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
     }
 
     return (
-        <View style={[ styles.container, { backgroundColor }]} >
-            <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-                keyboardVerticalOffset={Platform.OS === 'ios' ? getBottomSpace() - 195 : 0}
-            >
-            <GiftedChat
-                messages={messages}
-                onSend={messages => onSend(messages)}
-                user={{
-                    _id: userID, // '_id' property has the value of the (user ID) route parameter passed from the Start screen when logged in anonymously.
-                    name: name // 'name' property has the value of the name route parameter passed from Start screen when logged in anonymously.
-                }}
-                renderBubble={renderBubble}
-                renderInputToolbar={renderInputToolbar} 
-                renderSend={renderSend}
-                renderComposer={renderComposer}
-                renderSystemMessage={renderSystemMessage}
-                renderDay={renderDay}
-                renderActions={renderCustomActions}
-                renderCustomView={renderCustomView}
-                alwaysShowSend={true}
-            />
-            </KeyboardAvoidingView>
-            {/* { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null }
-            { Platform.OS === "ios" ? <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-211} /> : null }  */}
-        </View>
+        <SafeAreaView style={[styles.container, { backgroundColor: "white" }]} edges={['left', 'right', 'bottom']}>
+            <View style={[ styles.container, { backgroundColor }]} > 
+                <GiftedChat
+                    messages={messages}
+                    onSend={messages => onSend(messages)}
+                    user={{
+                        _id: userID, // '_id' property has the value of the (user ID) route parameter passed from the Start screen when logged in anonymously.
+                        name: name // 'name' property has the value of the name route parameter passed from Start screen when logged in anonymously.
+                    }}
+                    renderBubble={renderBubble}
+                    renderInputToolbar={renderInputToolbar} 
+                    renderSend={renderSend}
+                    renderComposer={renderComposer}
+                    renderSystemMessage={renderSystemMessage}
+                    renderDay={renderDay}
+                    renderActions={renderCustomActions}
+                    renderCustomView={renderCustomView}
+                    alwaysShowSend={true}
+                    bottomOffset={Platform.OS === 'ios' ? 0 : 0} // Keep input field above the keyboard without any space between them when opening emojis
+                />
+            </View>
+        </SafeAreaView>
     );
 }
 
@@ -229,11 +225,13 @@ const styles = StyleSheet.create({
     },
     InputToolbar: {
         flexDirection: 'row',
-        alignItems: 'flex-end',
+        alignItems: 'center',
         paddingVertical: 3,
         paddingHorizontal: 10,
         backgroundColor: 'white',
-        borderTopWidth: 0
+        borderTopWidth: 1, 
+        borderTopColor: '#e0e0e0',
+        marginBottom: 0
     },
     Composer: {
         backgroundColor: '#fff',
