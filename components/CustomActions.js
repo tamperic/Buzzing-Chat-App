@@ -7,7 +7,7 @@ import { useActionSheet } from '@expo/react-native-action-sheet'; // Fetch Gifte
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 
 
-const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID }) => {
+const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID, name }) => {
    const actionSheet = useActionSheet();
 
 
@@ -54,11 +54,11 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID })
                     _id: `${userID}-${new Date().getTime()}`, 
                     createdAt: new Date(),
                     user: {
-                    _id: userID,
-                    name: '',
+                        _id: userID,
+                        name: name,
                     },
                     image: imageURL,
-              }
+                }
             ]);
         });
     };
@@ -108,7 +108,8 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID })
                             _id: `${userID}-${new Date().getTime()}`,
                             createdAt: new Date(),
                             user: {
-                            _id: userID,
+                                _id: userID,
+                                name: name
                             },
                             location: {
                             latitude: location.coords.latitude,
