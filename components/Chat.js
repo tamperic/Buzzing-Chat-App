@@ -6,13 +6,16 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { addDoc, collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage"; // A persistent key-value storage mechanism in which can strings be stored.
 import MapView from 'react-native-maps';
-import { getBottomSpace } from "react-native-iphone-screen-helper";
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { useHeaderHeight } from "@react-navigation/elements";
 
 
 const Chat = ({ route, navigation, db, isConnected, storage }) => {
     const [ messages, setMessages ] = useState([]);
     const { name, backgroundColor, userID } = route.params;
+
+    const headerHeight = useHeaderHeight();
 
 
     let unsubMessages;// Declare the 'unsubMessages' variable outside the 'useEffect()' to not to lose the reference to the old unsubscribe function. 
@@ -193,28 +196,36 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
         return null;
     }
 
+    
+    
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: "white" }]} edges={['left', 'right', 'bottom']}>
-            <View style={[ styles.container, { backgroundColor }]} > 
-                <GiftedChat
-                    messages={messages}
-                    onSend={messages => onSend(messages)}
-                    user={{
-                        _id: userID, // '_id' property has the value of the (user ID) route parameter passed from the Start screen when logged in anonymously.
-                        name: name // 'name' property has the value of the name route parameter passed from Start screen when logged in anonymously.
-                    }}
-                    renderBubble={renderBubble}
-                    renderInputToolbar={renderInputToolbar} 
-                    renderSend={renderSend}
-                    renderComposer={renderComposer}
-                    renderSystemMessage={renderSystemMessage}
-                    renderDay={renderDay}
-                    renderActions={renderCustomActions}
-                    renderCustomView={renderCustomView}
-                    alwaysShowSend={true}
-                    bottomOffset={Platform.OS === 'ios' ? 0 : 0} // Keep input field above the keyboard without any space between them when opening emojis
-                />
-            </View>
+            <KeyboardAvoidingView 
+                style={{ flex: 1}}
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                keyboardVerticalOffset={headerHeight}
+            >
+          <View style={[styles.container, { backgroundColor }]}>
+            <GiftedChat
+               messages={messages}
+                onSend={messages => onSend(messages)}
+                user={{
+                    _id: userID, // '_id' property has the value of the (user ID) route parameter passed from the Start screen when logged in anonymously.
+                    name: name // 'name' property has the value of the name route parameter passed from Start screen when logged in anonymously.
+                }}
+                renderBubble={renderBubble}
+                renderInputToolbar={renderInputToolbar} 
+                renderSend={renderSend}
+                renderComposer={renderComposer}
+                renderSystemMessage={renderSystemMessage}
+                renderDay={renderDay}
+                renderActions={renderCustomActions}
+                renderCustomView={renderCustomView}
+                alwaysShowSend={true}
+                isKeyboardInternallyHandled={false}
+            />
+          </View>
+          </KeyboardAvoidingView>
         </SafeAreaView>
     );
 }
