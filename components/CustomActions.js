@@ -55,7 +55,6 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID, n
                     createdAt: new Date(),
                     user: {
                         _id: userID,
-                        name: name,
                     },
                     image: imageURL,
                 }
@@ -109,7 +108,6 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID, n
                             createdAt: new Date(),
                             user: {
                                 _id: userID,
-                                name: name
                             },
                             location: {
                             latitude: location.coords.latitude,
