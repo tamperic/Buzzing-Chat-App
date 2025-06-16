@@ -2,6 +2,8 @@
 
 **Buzzing** is a simple and user-friendly chat application that allows users to easily connect with friends, family, and others. Users can share messages, images, and their location, and personalize their chat experience by choosing one of four given background colors.
 
+
+
 ## Content
 
 1. [Tech Stack](#tech-stack)
@@ -50,12 +52,32 @@ cd Buzzing-Chat-App
 ```
 - Install dependencies:
 ```
-npm install
+npm install 
+or
+yarn install
 ```
 -  Start the development server - navigate to the project folder in terminal and run locally:
 ```
-npm expo start
+npx expo start
 ```
 - You can then scan the QR code with the Expo Go app on your mobile device, or run the app on an emulator (type **a** in terminal to open Android, **i** to open iOS, or **w** in a web browser)
 
-## Screenshots
+## Screenshots & How To Use?
+
+1. Open the app 
+
+    <img src="assets/Screenshot_1.jpeg" alt="Start screen" width="200" height="400"/>
+
+2. Enter your username and choose one of the four given background colors to personalize your chat experience
+
+    <img src="assets/Screenshot_2.jpeg" alt="Start screen" width="200" height="400"/>
+
+3. Press "**Let's chat!**" button to join the chat
+
+4. Type something into the input field and press the send icon
+
+    <img src="assets/Screenshot_3.jpeg" alt="Start screen" width="200" height="400"/>
+
+5. You can also share your location, take a picture with your device's camera or select an images from your photo library
+
+    <img src="assets/Screenshot_4.jpeg" alt="Start screen" width="200" height="400"/>
